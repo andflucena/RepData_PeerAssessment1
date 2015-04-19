@@ -1,0 +1,113 @@
+
+# Read data
+
+```{r}
+if(!file.exists("repdata-data-activity.zip")) {
+  temp <- tempfile()
+  download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip",temp)
+  unzip(temp)
+  unlink(temp)
+}
+```
+
+# See data
+
+```{r}
+activity <- read.csv("activity.csv")
+head(activity)
+names(activity)
+```
+
+# Transform data
+
+```{r}
+activity$date <- as.Date(activity$date, "%Y-%m-%d")
+Totalsteps <- aggregate(steps ~ date, data=activity, sum, na.rm=TRUE)
+head(Totalsteps)
+```
+
+# Make a histogram of the total number of steps
+
+```{r, echo=FALSE}
+hist(Totalsteps$steps, xlab= "day", col= "blue", main="Total Number of Steps by Day") 
+```
+
+# Mean and Median of steps taken per day: Calculate and report the mean and median of the total number of step
+
+```{r}
+mean(Totalsteps$steps)
+median(Totalsteps$steps)
+```
+
+# Average daily activity pattern
+
+```{r}
+interval <- aggregate (steps~interval, data=activity, sum) 
+```
+
+```{r, echo=FALSE}
+plot(steps_interval, type="l", xlab="interval", ylab="steps", col="red", main="Average Daily Activity Pattern")
+```
+
+```{r}
+maximum_number_steps <- steps_interval[which.max(steps_interval$steps),1]
+```
+
+# Imputing missing values: Calculate and report the total number of missing values
+
+```{r}
+missing_values <- sum(is.na(activity$steps))
+```
+
+# Devise a strategy for filling in all of the missing values
+
+
+```{r}
+Fill_missing_values <- aggregate (steps~interval, data=activity, FUN=mean)
+Fill_NA <- c(Fill_missing_values, steps~interval)
+```
+
+# Create a new dataset 
+
+```{r}
+dataset1 <- activity
+dataset2 <- Fill_NA
+```
+
+
+# Make a histogram of the total number of steps taken each day and Calculate 
+
+```{r}
+Totalsteps <- aggregate(steps~date, data=dataset1, sum, na.rm=TRUE)
+```
+
+```{r, echo=FALSE}
+hist(Totalsteps$steps, xlab="day", col="blue", main="Total Number of Steps")
+```
+
+
+# Report the mean and median total number of steps taken per day
+
+```{r}
+mean (Totalsteps$steps)
+median(Totalsteps$steps)
+```
+
+
+# Differences in activity patterns between weekdays and weekends
+
+```{r}
+head(activity)
+library(lattice)
+activity$date<-as.Date(activity$date,format = '%Y-%m-%d')
+activity$day <- ifelse(weekdays(activity$date) %in% c("Saturday", "Sunday"),'weekend','weekday')
+head(activity$day)
+stepsDaytype<-aggregate(steps~ interval+day,activity,FUN="mean")
+head(stepsDaytype)
+names(stepsDaytype) <- c("interval", "daylevel", "steps")
+```
+
+
+```{r, echo=FALSE}
+xyplot(steps ~ interval | daylevel, stepsDaytype, layout = c(1, 2), type = "l", col="red", xlab="interval", ylab="steps", main="Activity Patterns between Weekdays and Weekend")
+```
