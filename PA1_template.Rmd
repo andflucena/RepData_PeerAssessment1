@@ -28,7 +28,7 @@ head(Totalsteps)
 
 # Make a histogram of the total number of steps
 
-```{r, echo=FALSE}
+```{r,  scatterplot1, fig.width=8, fig.height=6, fig.=TRUE, echo=FALSE}
 hist(Totalsteps$steps, xlab= "day", col= "blue", main="Total Number of Steps by Day") 
 ```
 
@@ -42,10 +42,10 @@ median(Totalsteps$steps)
 # Average daily activity pattern
 
 ```{r}
-interval <- aggregate (steps~interval, data=activity, sum) 
+steps_interval <- aggregate (steps~interval, data=activity, sum) 
 ```
 
-```{r, echo=FALSE}
+```{r, scatterplot2, fig.width=8, fig.height=6, fig.=TRUE, echo=FALSE}
 plot(steps_interval, type="l", xlab="interval", ylab="steps", col="red", main="Average Daily Activity Pattern")
 ```
 
@@ -81,7 +81,7 @@ dataset2 <- Fill_NA
 Totalsteps <- aggregate(steps~date, data=dataset1, sum, na.rm=TRUE)
 ```
 
-```{r, echo=FALSE}
+```{r, scatterplot3, fig.width=8, fig.height=6, fig.=TRUE, echo=FALSE}
 hist(Totalsteps$steps, xlab="day", col="blue", main="Total Number of Steps")
 ```
 
@@ -108,6 +108,6 @@ names(stepsDaytype) <- c("interval", "daylevel", "steps")
 ```
 
 
-```{r, echo=FALSE}
+```{r, scatterplot4, fig.width=8, fig.height=6, fig.=TRUE, echo=FALSE}
 xyplot(steps ~ interval | daylevel, stepsDaytype, layout = c(1, 2), type = "l", col="red", xlab="interval", ylab="steps", main="Activity Patterns between Weekdays and Weekend")
 ```

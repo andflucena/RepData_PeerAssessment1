@@ -64,7 +64,7 @@ head(Totalsteps)
 
 # Make a histogram of the total number of steps
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk scatterplot1](figure/scatterplot1-1.png) 
 
 # Mean and Median of steps taken per day: Calculate and report the mean and median of the total number of step
 
@@ -89,21 +89,14 @@ median(Totalsteps$steps)
 
 
 ```r
-interval <- aggregate (steps~interval, data=activity, sum) 
+steps_interval <- aggregate (steps~interval, data=activity, sum) 
 ```
 
-
-```
-## Error in plot(steps_interval, type = "l", xlab = "interval", ylab = "steps", : object 'steps_interval' not found
-```
+![plot of chunk scatterplot2](figure/scatterplot2-1.png) 
 
 
 ```r
 maximum_number_steps <- steps_interval[which.max(steps_interval$steps),1]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'steps_interval' not found
 ```
 
 # Imputing missing values: Calculate and report the total number of missing values
@@ -138,7 +131,7 @@ dataset2 <- Fill_NA
 Totalsteps <- aggregate(steps~date, data=dataset1, sum, na.rm=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
+![plot of chunk scatterplot3](figure/scatterplot3-1.png) 
 
 
 # Report the mean and median total number of steps taken per day
@@ -209,4 +202,4 @@ names(stepsDaytype) <- c("interval", "daylevel", "steps")
 ```
 
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
+![plot of chunk scatterplot4](figure/scatterplot4-1.png) 
